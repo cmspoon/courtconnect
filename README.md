@@ -4,7 +4,7 @@
 **Input:** (Lebron James, Kobe Bryant)  
 **Output:** "Lebron James -> Shaquille O'Neal -> Kobe Bryant"
 ### Current Dataset:
-All players from the 2020-21 NBA Season to the 2023-24 NBA Season  
+All players from the 2009-10 NBA Season to the 2023-24 NBA Season  
 Goal is all players from the 2000-01 NBA Season to the present season
 ### Forseen Issues:
 - Players on multiple teams in a single season (currently listed on multiple teams in one season)
