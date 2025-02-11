@@ -4,7 +4,7 @@
 **Input:** (Lebron James, Kobe Bryant)  
 **Output:** "Lebron James -> Shaquille O'Neal -> Kobe Bryant"
 ### Current Dataset:
-All players from the 2003-04 NBA Season to the 2023-24 NBA Season (Almost 12,000 Lines!) 
+All players from the 2003-04 NBA Season to the 2023-24 NBA Season (Almost 12,000 Lines!)  
 Goal is all players from the 2000-01 NBA Season to the present season
 ### Forseen Issues:
 - Players on multiple teams in a single season (currently listed on multiple teams in one season)
