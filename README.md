@@ -9,7 +9,7 @@
 
 ---
 
-## 📚 Dataset
+## Dataset
 
 The dataset currently covers **NBA seasons from 2003–04 to 2023–24**, totaling over 12,000 player-season-team entries. It is stored in `nba_players.csv` and includes:
 - Player 
@@ -18,7 +18,7 @@ The dataset currently covers **NBA seasons from 2003–04 to 2023–24**, totali
 
 ---
 
-## 🚧 Known Challenges
+## Known Challenges
 
 - Players appearing on multiple teams in the same season
 - Players who were on a roster but didn’t play due to injury
@@ -26,11 +26,11 @@ The dataset currently covers **NBA seasons from 2003–04 to 2023–24**, totali
 
 These are being addressed as the dataset is cleaned.
 
-
 ---
 
-## 🛠️ Future Implementations
+## Future Implementations
 
-- 3MW Connection Recycling - Extend connection recycling from to Three-Man Weave mode
-- Dataset Expansion — Extend dataset coverage to include seasons prior to 2003–04.
-- Weighted Connections — Prioritize more meaningful connections by weighting superstar status, longevity, and team relevance.
+- Connection Recycling - Extend connection recycling from to Three-Man Weave mode
+- Dataset Expansion - Extend dataset coverage to include seasons prior to 2003–04.
+- Weighted Connections - Prioritize more meaningful connections by weighting superstar status, longevity, and team relevance.
+- GUI Makeover - Transition to a more polished display
