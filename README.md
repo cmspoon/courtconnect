@@ -31,6 +31,6 @@ These are being addressed as the dataset is cleaned.
 
 ## 🛠️ Future Implementations
 
-- Three-Man Weave — Input three players and return a shared connection path linking all three.
+- 3MW Connection Recycling - Extend connection recycling from to Three-Man Weave mode
 - Dataset Expansion — Extend dataset coverage to include seasons prior to 2003–04.
 - Weighted Connections — Prioritize more meaningful connections by weighting superstar status, longevity, and team relevance.
