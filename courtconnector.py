@@ -22,22 +22,21 @@ def build(df):
 def find(graph, start, end):
     # finds the shortest path from start to end in the graph
     if start not in graph or end not in graph:
-        return []
+        return None
     
     queue = deque([(start, [start])])
-    visited = set()
+    visited = {start}
 
     while queue:
         curr, path = queue.popleft()
         if curr == end:
             return path
-
-        visited.add(curr)
         for neighbor in graph[curr]:
             if neighbor not in visited:
+                visited.add(neighbor)
                 queue.append((neighbor, path + [neighbor]))
     
-    return []
+    return None
 
 def format(seasons):
     # formats the seasons and teams
@@ -62,9 +61,8 @@ def format(seasons):
 
 def connection(graph, path):
     # prints the connection between players in the path
-    if not path or len(path) < 2:
-        print("No CourtConnection found.")
-        return
+    if not path:
+        return False
     for i in range(len(path) - 1):
         player1, player2 = path[i], path[i + 1]
         seasons = graph[player1][player2]
@@ -80,66 +78,78 @@ def fuzzymatch(input, players):
     suggestions = [(original_names[name], score) for name, score, _ in matches]
     return best_match, suggestions
 
-def inputprompt(prompt, player_names, name_map):
-    # prompts the user for input and calls fuzzymatch
+def inputprompt(prompt, player_names):
+    # prompts the user for input and handles fuzzy matching
+    name_lookup = {name.lower(): name for name in player_names}
+
     while True:
         raw = input(prompt).strip()
-        if raw.lower() in name_map:
-            return name_map[raw.lower()]
-        while True:
-            _, suggestions = fuzzymatch(raw, player_names)
-            if not suggestions:
-                print(f"No close matches found for '{raw}'\n")
-                raw = input(prompt).strip()
-                if raw.lower() in name_map:
-                    return name_map[raw.lower()]
-                continue
-            print(f"\nDid you mean one of these?")
-            for i, (name, score) in enumerate(suggestions[:3], 1):
-                print(f"{i}. {name} ({score:.1f}%)")
-            choice = input(f"Select 1 - 3 or retype a name: ").strip()
-            if choice in {"1", "2", "3"}:
-                idx = int(choice) - 1
-                return suggestions[idx][0]
-            elif choice.lower() in name_map:
-                return name_map[choice.lower()]
-            else:
-                raw = choice
+        if raw in player_names:
+            return raw
+        if raw.lower() in name_lookup:
+            return name_lookup[raw.lower()]
+
+        _, suggestions = fuzzymatch(raw, player_names)
+
+        for name, score in suggestions:
+            if score >= 100.0:
+                return name
+
+        if not suggestions:
+            print(f"No close matches found for '{raw}'\n")
+            continue
+
+        print("\nDid you mean one of these?")
+        for i, (name, score) in enumerate(suggestions[:3], 1):
+            print(f"{i}. {name} ({score:.1f}%)")
+
+        choice = input("Select 1-3 or retype a name: ").strip()
+        if choice in {"1", "2", "3"}:
+            return suggestions[int(choice) - 1][0]
+        elif choice in player_names:
+            print('exact match found)')
+            return choice
+        elif choice.lower() in name_lookup:
+            print("namelookup")         
+            return name_lookup[choice.lower()]         
+        else:
+            print("reset")
+            raw = choice
 
 def main():
-    print("""\033[1m
+    print("""\033[1m 
    ____                 _    ____                            _   
   / ___|___  _   _ _ __| |_ / ___|___  _ __  _ __   ___  ___| |_ 
  | |   / _ \| | | | '__| __| |   / _ \| '_ \| '_ \ / _ \/ __| __|
  | |__| (_) | |_| | |  | |_| |__| (_) | | | | | | |  __/ (__| |_ 
-  \____\___/ \__,_|_|   \__|\____\___/|_| |_|_| |_|\___|\___|\__|
-                                                                 
+  \____\___/ \__,_|_|   \__|\____\___/|_| |_|_| |_|\___|\___|\__|                                                  
     \033[0m""")
     print("Loading NBA player data...")
     df = pd.read_csv("nba_players.csv")
-    df["Player Name"] = df["Player Name"].astype(str).str.strip()
-    players_raw = df["Player Name"].unique()
-    name_map = {name.lower(): name for name in players_raw}
-    players = list(name_map.keys())
+    players = df["Player Name"].unique().tolist()
     graph = build(df)
-
     mode = input("Enter 'C' for CourtConnection or 'T' for Three-Man Weave: ").strip().upper()
+    
     # CourtConnection Mode
     if mode == 'C':
-        playerA = inputprompt("Enter Player A: ", players, name_map)
-        playerB = inputprompt("Enter Player B: ", players, name_map)
-        if playerA == playerB:
+        playerA = inputprompt("Enter Player A: ", players)
+        playerB = inputprompt("Enter Player B: ", players)
+        if not playerA or not playerB or playerA == playerB:
             print("Invalid player names provided.")
             return
 
         path = find(graph, playerA, playerB)
-        connection(graph, path)
-    
+        if path:
+            print("\nCourtConnection:")
+            connection(graph, path)
+        else:
+            print(f"No CourtConnection between {playerA} and {playerB} found.")
+
     # Three-Man Weave Mode
     elif mode == 'T':
-        playerA = inputprompt("Enter Player A: ", players, name_map)
-        playerB = inputprompt("Enter Player B: ", players, name_map)
-        playerC = inputprompt("Enter Player C: ", players, name_map)
+        playerA = inputprompt("Enter Player A: ", players)
+        playerB = inputprompt("Enter Player B: ", players)
+        playerC = inputprompt("Enter Player C: ", players)
         if not playerA or not playerB or not playerC or playerA == playerB or playerB == playerC or playerA == playerC:
             print("Invalid player names provided.")
             return
@@ -151,7 +161,7 @@ def main():
             connection(graph, path1)
             connection(graph, path2)
         else:
-            print("No Three-Man Weave found.")
+            print(f"No Three-Man Weave between {playerA}, {playerB}, and {playerC} found.")
             return
     else:
         print("Invalid mode selected. Please enter 'C' or 'T'.")
