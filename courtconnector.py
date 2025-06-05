@@ -8,7 +8,6 @@ def build(df):
     grouped = df.groupby(["Season", "Team"])
     
     for (season, team), group in grouped:
-        # strip whitespace from player names to avoid mismatches
         players = group["Player Name"].dropna().str.strip().unique().tolist()
         for i in range(len(players)):
             for j in range(i + 1, len(players)):
@@ -107,13 +106,10 @@ def inputprompt(prompt, player_names):
         if choice in {"1", "2", "3"}:
             return suggestions[int(choice) - 1][0]
         elif choice in player_names:
-            print('exact match found)')
             return choice
-        elif choice.lower() in name_lookup:
-            print("namelookup")         
+        elif choice.lower() in name_lookup:    
             return name_lookup[choice.lower()]         
         else:
-            print("reset")
             raw = choice
 
 def main():
