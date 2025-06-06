@@ -19,23 +19,30 @@ def build(df):
     return graph
 
 def find(graph, start, end):
-    # finds the shortest path from start to end in the graph
+    # finds the shortest paths from start to end in the graph
     if start not in graph or end not in graph:
-        return None
+        return []
     
-    queue = deque([(start, [start])])
-    visited = {start}
+    queue = deque([[start]])
+    paths = []
+    shortest = None
 
     while queue:
-        curr, path = queue.popleft()
+        path = queue.popleft()
+        curr = path[-1]
+        if shortest and len(path) > shortest:
+            break    
         if curr == end:
-            return path
+            if shortest is None:
+                shortest = len(path)
+            paths.append(path)
+            continue      
         for neighbor in graph[curr]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.append((neighbor, path + [neighbor]))
-    
-    return None
+            if neighbor not in path:
+                queue.append(path + [neighbor])
+
+    return paths
+
 
 def format(seasons):
     # formats the seasons and teams
@@ -51,10 +58,10 @@ def format(seasons):
         start = prev = years[0]
         for y in years[1:]:
             if y != prev + 1:
-                formatted.append(f"{team} {start}–{prev+1 if prev > start else start+1}")
+                formatted.append(f"{team} {start}-{prev+1 if prev > start else start+1}")
                 start = y
             prev = y
-        formatted.append(f"{team} {start}–{prev+1 if prev > start else start+1}")
+        formatted.append(f"{team} {start}-{prev+1 if prev > start else start+1}")
     
     return ', '.join(formatted)
 
@@ -134,12 +141,24 @@ def main():
             print("Invalid player names provided.")
             return
 
-        path = find(graph, playerA, playerB)
-        if path:
-            print("\nCourtConnection:")
-            connection(graph, path)
-        else:
+        paths = find(graph, playerA, playerB)
+        if not paths:
             print(f"No CourtConnection between {playerA} and {playerB} found.")
+            return
+        
+        print(f"\n{len(paths)} CourtConnections found!")
+        i = 0
+        while i < len(paths):
+            print(f"\nCourtConnection #{i + 1}:")
+            connection(graph, paths[i])
+            if i + 1 < len(paths):
+                choice = input("\nEnter 'N' for another connection or any other key to exit: ").strip().lower()
+                if choice == 'n':
+                    i += 1
+                else:
+                    break
+            else:
+                break
 
     # Three-Man Weave Mode
     elif mode == 'T':
