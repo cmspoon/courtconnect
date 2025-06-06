@@ -1,5 +1,5 @@
-# 🏀 courtconnect 
-    An algorithm connecting any two NBA players through mutual teammates
+# courtconnect 🏀
+    A Python CLI algorithm connecting any two NBA players through mutual teammates
   
 > Input:  
 > `Kobe Bryant, LeBron James`  
@@ -11,7 +11,7 @@
 
 ## Dataset
 
-The dataset currently covers **NBA seasons from 2003–04 to 2023–24**, totaling over 12,000 player-season-team entries. It is stored in `nba_players.csv` and includes:
+The dataset, `nba_players.csv`, currently covers **NBA seasons from 2003–04 to 2023–24**, totaling over 12,000 player-season-team entries: 
 - Player 
 - Team
 - Season
@@ -24,13 +24,13 @@ The dataset currently covers **NBA seasons from 2003–04 to 2023–24**, totali
 - Players who were on a roster but didn’t play due to injury
 - Players with names containing accents or non-ASCII characters (e.g., Luka Dončić) may not import correctly
 
-These are being addressed as the dataset is cleaned.
+These are addressed as the dataset is cleaned.
 
 ---
 
 ## Future Implementations
 
-- Connection Recycling - Extend connection recycling from to Three-Man Weave mode
+- All Connections - Finds all paths of the shortest length
 - Dataset Expansion - Extend dataset coverage to include seasons prior to 2003–04.
 - Weighted Connections - Prioritize more meaningful connections by weighting superstar status, longevity, and team relevance.
 - GUI Makeover - Transition to a more polished display
