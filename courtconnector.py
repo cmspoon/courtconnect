@@ -145,14 +145,12 @@ def main():
         if not paths:
             print(f"No CourtConnection between {playerA} and {playerB} found.")
             return
-        
-        print(f"\n{len(paths)} CourtConnections found!")
         i = 0
         while i < len(paths):
-            print(f"\nCourtConnection #{i + 1}:")
+            print(f"\nCourtConnection ({i + 1} of {len(paths)}):")
             connection(graph, paths[i])
             if i + 1 < len(paths):
-                choice = input("\nEnter 'N' for another connection or any other key to exit: ").strip().lower()
+                choice = input("\nEnter 'N' for another CourtConnection or any other key to exit: ").strip().lower()
                 if choice == 'n':
                     i += 1
                 else:
@@ -169,15 +167,27 @@ def main():
             print("Invalid player names provided.")
             return
         
-        path1 = find(graph, playerA, playerB)
-        path2 = find(graph, playerB, playerC)
-        if path1 and path2:
-            print("\nThree-Man Weave:")
-            connection(graph, path1)
-            connection(graph, path2)
-        else:
-            print(f"No Three-Man Weave between {playerA}, {playerB}, and {playerC} found.")
+        paths1 = find(graph, playerA, playerB)
+        paths2 = find(graph, playerB, playerC)
+        if not paths1 or not paths2:
+            print(f"No Three-Man Weave found between {playerA}, {playerB}, and {playerC}.")
             return
+        i = j = 0
+        while i < len(paths1):
+            while j < len(paths2):
+                print(f"\nThree-Man Weave ({i * len(paths2) + j + 1} of {len(paths1) * len(paths2)}):")
+                connection(graph, paths1[i])
+                connection(graph, paths2[j])
+                if j + 1 < len(paths2):
+                    choice = input("\nEnter 'N' for another Three-Man Weave or any other key to exit: ").strip().lower()
+                    if choice == 'n':
+                        j += 1
+                    else:
+                        return
+                else:
+                    j = 0
+                    break
+            i += 1
     else:
         print("Invalid mode selected. Please enter 'C' or 'T'.")
         return
