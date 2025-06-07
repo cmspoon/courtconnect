@@ -5,7 +5,7 @@ from courtconnector import build, find
 
 @pytest.fixture
 def graph():
-    path = os.path.join(os.path.dirname(__file__), "test_players.csv")
+    path = os.path.join(os.path.dirname(__file__), "players1.csv")
     df = pd.read_csv(path)
     return build(df)
 
@@ -21,4 +21,4 @@ def test_indirect(graph):
 
 def test_none(graph):
     path = find(graph, "Jeff Teague", "Fake Player")
-    assert path == [], "No connection found"
+    assert path == None, "No connection found"
