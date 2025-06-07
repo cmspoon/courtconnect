@@ -30,7 +30,7 @@ These are addressed as the dataset is cleaned.
 
 ## Future Implementations
 
-- All Connections - Finds all paths of the shortest length
+- Path Caching - Store previously searched paths to avoid redundancy and improve performance.
 - Dataset Expansion - Extend dataset coverage to include seasons prior to 2003–04.
 - Weighted Connections - Prioritize more meaningful connections by weighting superstar status, longevity, and team relevance.
 - GUI Makeover - Transition to a more polished display
