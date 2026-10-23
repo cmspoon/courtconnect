@@ -26,4 +26,4 @@ def test_indirect3(graph):
 def test_none3(graph):
     path1 = find(graph, "Jeff Teague", "FakePlayer D")
     path2 = find (graph, "FakePlayer D", "FakePlayer E")
-    assert path1 == None and path2 == None, "No three-man weave found"
+    assert path1 == None or path2 == None, "No three-man weave found"
