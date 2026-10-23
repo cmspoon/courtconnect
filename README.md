@@ -1,36 +1,64 @@
-# 🏀 courtconnect 
-    An algorithm connecting any two NBA players through mutual teammates
-  
-> Input:  
-> `Kobe Bryant, LeBron James`  
-> Output:   
-> `Kobe Bryant ➝ Shaquille O'Neal (LAL 2003–2004)`   
-> `Shaquille O'Neal ➝ LeBron James (CLE 2009-2010)`
+# 🏀 courtconnect
+
+courtconnect is a graph traversal engine and terminal game suite that connects NBA players across league history through mutual teammates.
 
 ---
 
-## Dataset
+## Game Modes
 
-The dataset currently covers **NBA seasons from 2003–04 to 2023–24**, totaling over 12,000 player-season-team entries. It is stored in `nba_players.csv` and includes:
-- Player 
-- Team
-- Season
-
----
-
-## Known Challenges
-
-- Players appearing on multiple teams in the same season
-- Players who were on a roster but didn’t play due to injury
-- Players with names containing accents or non-ASCII characters (e.g., Luka Dončić) may not import correctly
-
-These are being addressed as the dataset is cleaned.
+* **CourtConnection (`courtconnector.py`)**: Finds the shortest teammate chain between any two players
+* **Three-Man Weave (`courtconnector.py`)**: Connects three players in a continuous relay (Player A → Player B → Player C)
+* **Journeyman (`journeyman.py`)**: Given a start and target player, guess intermediate teammates to connect them
 
 ---
 
-## Future Implementations
+## Installation & Setup
 
-- Further Tests - Extend tests for allConnections feature
-- Dataset Expansion - Extend dataset coverage to include seasons prior to 2003–04.
-- Weighted Connections - Prioritize more meaningful connections by weighting superstar status, longevity, and team relevance.
-- GUI Makeover - Transition to a more polished display
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/cmspoon/courtconnect.git](https://github.com/cmspoon/courtconnect.git)
+   cd courtconnect
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+---
+
+## Usage
+
+* **Run Standard Modes (CourtConnection & Three-Man Weave):**
+  ```bash
+  python courtconnector.py
+  ```
+
+* **Run Journeyman:**
+  ```bash
+  python journeyman.py
+  ```
+
+* **Run Test Suite:**
+  ```bash
+  python -m pytest tests/ -v
+  ```
+
+---
+
+## Project Structure
+
+```text
+courtconnect/
+├── courtconnector.py          # Graph builder, BFS engine, and name resolution
+├── journeyman.py              # Journeyman game state machine
+├── graph.py                   # PyVis + NetworkX graph generator
+├── nba_players.csv            # NBA roster dataset
+├── requirements.txt           # Project dependencies
+├── tests/
+│   ├── test_courtconnect.py   # Two-player path unit tests
+│   ├── test_threemanweave.py  # Three-player path unit tests
+│   ├── players1.csv           # Test dataset
+│   └── players2.csv           # Test dataset
+└── .gitignore                 # Ignore files
+```
