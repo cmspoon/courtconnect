@@ -15,7 +15,6 @@ def build(df):
                 graph[p1][p2].add((season, team))
                 graph[p2][p1].add((season, team))
     
-    print("CourtConnector built successfully!")
     return graph
 
 def find(graph, start, end):
@@ -78,14 +77,16 @@ def fuzzymatch(input, players):
     return best_match, suggestions
 
 def inputprompt(prompt, player_names):
-    # prompts the user for input and handles fuzzy matching
+    # prompts the user for input utilizing fuzzy matching
     name_lookup = {name.lower(): name for name in player_names}
 
     while True:
         raw = input(prompt).strip()
+        if raw.lower() == "quit":
+            return raw.lower()
         if raw in player_names:
             return raw
-        if raw.lower() in name_lookup:
+        elif raw.lower() in name_lookup:
             return name_lookup[raw.lower()]
 
         _, suggestions = fuzzymatch(raw, player_names)
@@ -113,13 +114,13 @@ def inputprompt(prompt, player_names):
             raw = choice
 
 def main():
-    print("""\033[1m 
+    print(r"""\033[1m 
    ____                 _    ____                            _   
   / ___|___  _   _ _ __| |_ / ___|___  _ __  _ __   ___  ___| |_ 
  | |   / _ \| | | | '__| __| |   / _ \| '_ \| '_ \ / _ \/ __| __|
  | |__| (_) | |_| | |  | |_| |__| (_) | | | | | | |  __/ (__| |_ 
   \____\___/ \__,_|_|   \__|\____\___/|_| |_|_| |_|\___|\___|\__|                                                  
-    \033[0m""")
+    """)
     print("Loading NBA player data...")
     df = pd.read_csv("nba_players.csv")
     players = df["Player Name"].unique().tolist()
